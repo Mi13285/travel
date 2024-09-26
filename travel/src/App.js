@@ -24,6 +24,7 @@ function Form() {
   const [quantity, setQuantity] = useState(3);
 
   function handleSubmit(e) {
+    setDescription(e.target.value);
     e.preventDefault();
     if (description === "") {
       return;
@@ -35,6 +36,8 @@ function Form() {
       packed: false,
     };
     console.log(newItem);
+    setDescription("");
+    setQuantity(1);
   }
 
   return (
