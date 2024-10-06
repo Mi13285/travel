@@ -9,11 +9,11 @@ export default function App() {
   }
 
   function handleDelete(id) {
-    setItems((items) => items.filter((item) => item.id !== id));
+    setItems((items) => items.filter((items) => items.id !== id));
   }
 
   function handleToggleItem(id) {
-    setItems((items) =>
+    setItems((item) =>
       items.map((item) =>
         item.id === id ? { ...item, packed: !item.packed } : item
       )
@@ -29,7 +29,7 @@ export default function App() {
         onDeleteItems={handleDelete}
         onToggleItem={handleToggleItem}
       />
-      <Stats />
+      <Stats items={items} />
     </div>
   );
 }
@@ -115,16 +115,23 @@ function Item({ item, packed, onDeleteItems, onToggleItem }) {
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.description} {item.quantity}
       </span>
-      {/* <button onClick={(e) => handleDelete(id)>
-❌</button> */}
-      <button onClick={() => onDeleteItems(item.id)}>❌</button>
+      <button onClick={() => onDeleteItems(item.id)}> ❌</button>
     </li>
   );
 }
-function Stats() {
+function Stats({ items }) {
+  const numItems = items.length;
+  const numPacked = items.filter((item) => item.packed).length;
+  const percent = Math.round((numPacked / numItems) * 100);
+
   return (
     <footer className="stats">
-      <em>You have X items on your list, and you already packed x (X%)</em>
+      <em>
+        {percent === 100
+          ? "You got everything ! Ready to go ✈️"
+          : `You have ${numItems} item on your list, and you already packed
+        ${numPacked} (${percent}%)`}
+      </em>
     </footer>
   );
 }
