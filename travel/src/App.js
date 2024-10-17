@@ -4,6 +4,10 @@ import React, { useState } from "react";
 export default function App() {
   const [items, setItems] = useState([]);
 
+  function handleDeleteALL() {
+    setItems([]);
+    alert("do you want delete");
+  }
   function handleAddItem(item) {
     setItems((items) => [...items, item]);
   }
@@ -28,6 +32,7 @@ export default function App() {
         items={items}
         onDeleteItems={handleDelete}
         onToggleItem={handleToggleItem}
+        onDeleteItemsAll={handleDeleteALL}
       />
       <Stats items={items} />
     </div>
@@ -87,8 +92,10 @@ function Form({ onAddItems }) {
     </form>
   );
 }
-function PackingList({ items, onDeleteItems, onToggleItem }) {
+
+function PackingList({ items, onDeleteItems, onToggleItem, onDeleteItemsAll }) {
   const [sortBy, setSortBy] = useState("input");
+
   let sortedItems;
   if (sortBy === "input") sortedItems = items;
 
@@ -99,7 +106,7 @@ function PackingList({ items, onDeleteItems, onToggleItem }) {
 
   if (sortBy === "packed")
     sortedItems = items.slice().sort((a, b) => a.packed - b.packed);
-
+  console.log(sortedItems);
   return (
     <>
       <ul className="list">
@@ -109,6 +116,7 @@ function PackingList({ items, onDeleteItems, onToggleItem }) {
             onDeleteItems={onDeleteItems}
             onToggleItem={onToggleItem}
             key={item.id}
+            onDeleteAll={onDeleteItemsAll}
           />
         ))}
       </ul>
@@ -118,12 +126,13 @@ function PackingList({ items, onDeleteItems, onToggleItem }) {
           <option value="description"> Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+        <button onClick={onDeleteItemsAll}> Delet all</button>
       </div>
     </>
   );
 }
 
-function Item({ item, packed, onDeleteItems, onToggleItem }) {
+function Item({ item, packed, onDeleteItems, onToggleItem, onDeleteAll }) {
   return (
     <li>
       <input
@@ -136,7 +145,8 @@ function Item({ item, packed, onDeleteItems, onToggleItem }) {
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.description} {item.quantity}
       </span>
-      <button onClick={() => onDeleteItems(item.id)}> ❌</button>
+      <button onClick={() => onDeleteAll()}> ❌</button>
+      <button> </button>
     </li>
   );
 }
