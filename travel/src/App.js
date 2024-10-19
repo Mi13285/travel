@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
+import Logo from "./Logo.js";
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -37,9 +38,6 @@ export default function App() {
       <Stats items={items} />
     </div>
   );
-}
-function Logo() {
-  return <h1>🏝 Far Away</h1>;
 }
 
 function Form({ onAddItems }) {
@@ -145,8 +143,7 @@ function Item({ item, packed, onDeleteItems, onToggleItem, onDeleteAll }) {
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.description} {item.quantity}
       </span>
-      <button onClick={() => onDeleteAll()}> ❌</button>
-      <button> </button>
+      <button onClick={() => onDeleteItems(item.id)}> ❌</button>
     </li>
   );
 }
